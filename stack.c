@@ -1,32 +1,41 @@
 #include<stdio.h>
 #include<stdlib.h>
-typedef struct{
-	int top;
-	int items[10]
-}stack;
-void push(stack *s, int val){
-	s->items[++s->top]=val;
+#include<stdbool.h>
+struct stack{
+    int top;
+    int* data;
+};
+struct stack* createStack(struct stack* s,int n){
+    s->top=-1;
+    s->data=(int*)malloc(n*sizeof(int));
+    return s;
 }
-int empty(stack *s){
-	if(s->top==-1)
-		return 1;
-	else
-		return 0;
+int push(struct stack* s,int value){
+    return s->data[++s->top]=value;
 }
-int pop(stack *s){
-	if(!empty(s))
-		return(s->items[s->top--]);
+void pop(struct stack* s){
+    s->top--;
 }
-int Top(stack *s){
-	return(s->items[s->top]);
+int Top(struct stack* s){
+    return s->data[s->top];
 }
-int main()
-{
-	stack *s=(stack*)malloc(sizeof(stack));
-	push(s,1);
-	push(s,2);
-	printf("%d\n",pop(s));
-	printf("%d\n",pop(s));	
+bool empty(struct stack* s){
+    return s->top==-1;
+}
 
-	return 0;
+int main(){
+    struct stack* s;
+    int n;
+    scanf("%d",&n);
+    s=createStack(s,n);
+    int temp;
+    for(int i=0;i<n;i++){
+        scanf("%d",&temp);
+        push(s,temp);
+    }
+    for(int i=0;i<n;i++){
+        printf("%d ",Top(s));
+        pop(s);
+    }
+    printf("%d\n",empty(s));
 }
